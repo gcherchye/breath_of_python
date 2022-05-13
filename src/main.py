@@ -6,6 +6,7 @@ import sys
 import pygame
 
 from config import config
+from level import Level
 
 
 class Game:
@@ -20,6 +21,8 @@ class Game:
         self.screen = pygame.display.set_mode((config.width, config.height))
         pygame.display.set_caption('Breath of Python')
 
+        self.level = Level()
+
     def run(self):
         """Run the game"""
         while True:
@@ -29,6 +32,7 @@ class Game:
                     sys.exit()
 
             self.screen.fill('black')
+            self.level.run()
 
             pygame.display.update()
             self.clock.tick(config.fps)
