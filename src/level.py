@@ -3,9 +3,11 @@ from __future__ import absolute_import
 
 import pygame
 
-from config import config
-from player import Player
-from tile import Tile
+
+from .config import config
+from .player import Player
+from .tile import Tile
+
 
 
 class Level:

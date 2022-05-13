@@ -5,8 +5,8 @@ import sys
 
 import pygame
 
-from config import config
-from level import Level
+from src.config import config
+from src.level import Level
 
 
 class Game:
