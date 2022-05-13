@@ -9,7 +9,12 @@ import pygame
 class Player(pygame.sprite.Sprite):
     """docstring goes here"""
 
-    def __init__(self, pos: Tuple[int, int], groups: List[pygame.sprite.Group]) -> None:
+    def __init__(
+            self,
+            pos: Tuple[int, int],
+            groups: List[pygame.sprite.Group],
+            obstacles: pygame.sprite.Group
+        ) -> None:
         super().__init__(groups)
 
         self.image = pygame.image.load('lib/images/dummy/player.png').convert_alpha()
@@ -18,10 +23,12 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2()
         self.speed = 5
 
+        self.obstacles_sprite = obstacles
+
     def _input(self):
         """docstring goes here"""
         keys = pygame.key.get_pressed()
-        
+
         if keys[pygame.K_z]:
             self.direction.y = -1
         elif keys[pygame.K_s]:
@@ -40,7 +47,30 @@ class Player(pygame.sprite.Sprite):
         """docstring"""
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
-        self.rect.center += self.direction * speed
+
+        self.rect.x += self.direction.x * speed
+        self._collision('horizontal')
+        self.rect.y += self.direction.y * speed
+        self._collision('vertical')
+
+    def _collision(self, direction):
+        """docstring"""
+        if direction == 'horizontal':
+            for sprite in self.obstacles_sprite:
+                if sprite.rect.colliderect(self.rect):
+                    if self.direction.x >= 0:
+                        self.rect.right = sprite.rect.left
+                    if self.direction.x <= 0:
+                        self.rect.left = sprite.rect.right
+
+        if direction == 'vertical':
+            for sprite in self.obstacles_sprite:
+                if sprite.rect.colliderect(self.rect):
+                    if self.direction.y >= 0:
+                        self.rect.bottom = sprite.rect.top
+                    if self.direction.y <= 0:
+                        self.rect.top = sprite.rect.bottom
+
 
     def update(self):
         """docstring goes here"""
