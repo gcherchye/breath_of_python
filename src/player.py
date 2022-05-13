@@ -35,9 +35,11 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
-    
+
     def _move(self, speed):
         """docstring"""
+        if self.direction.magnitude() != 0:
+            self.direction = self.direction.normalize()
         self.rect.center += self.direction * speed
 
     def update(self):
