@@ -18,6 +18,7 @@ class Game:
 
         self.config = config
         self.screen = pygame.display.set_mode((config.width, config.height))
+        pygame.display.set_caption('Breath of Python')
 
     def run(self):
         """Run the game"""
