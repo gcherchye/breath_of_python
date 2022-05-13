@@ -8,6 +8,9 @@ class Level:
     """Level management class"""
 
     def __init__(self) -> None:
+        # Get the game display surface
+        self.display_surface = pygame.display.get_surface()
+
         # Sprite group setup
         self.visible_sprites = pygame.sprite.Group()
         self.obstacle_sprites = pygame.sprite.Group()
