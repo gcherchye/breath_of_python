@@ -1,12 +1,14 @@
 """Level management class"""
 from __future__ import absolute_import
 
-import pygame
+import random
 
+import pygame
 
 from .config import config
 from .player import Player
 from .tile import Tile
+from .utils import import_csv_layout, import_image_from_folder
 
 
 
@@ -28,19 +30,53 @@ class Level:
         self._create_map()
 
     def _create_map(self):
-        for row_index, row in enumerate(config.world_map):
-            for col_index, col in enumerate(row):
-                x_pos = col_index * config.tilesize
-                y_pos = row_index * config.tilesize
+        layouts = {
+            'boundary': import_csv_layout('lib/data/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('lib/data/map_Grass.csv'),
+            'object': import_csv_layout('lib/data/map_Objects.csv')
+        }
 
-                if col == 'x':
-                    Tile((x_pos, y_pos), [self.visible_sprites, self.obstacle_sprites])
-                if col == 'p':
-                    self.player = Player(
-                        (x_pos, y_pos),
-                        [self.visible_sprites],
-                        self.obstacle_sprites
-                    )
+        graphics = {
+            'grass': import_image_from_folder('lib/images/grass'),
+            'objects': import_image_from_folder('lib/images/objects')
+        }
+
+        for style, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':
+                        x_pos = col_index * config.tilesize
+                        y_pos = row_index * config.tilesize
+
+                        if style == 'boundary':
+                            Tile(
+                                pos=(x_pos, y_pos),
+                                groups=[self.obstacle_sprites],
+                                sprite_type='invisible'
+                            )
+
+                        if style == 'grass':
+                            Tile(
+                                pos=(x_pos, y_pos),
+                                groups=[self.visible_sprites, self.obstacle_sprites],
+                                sprite_type='grass',
+                                surface=random.choice(graphics['grass'])
+                            )
+
+                        if style == 'object':
+                            Tile(
+                                pos=(x_pos, y_pos),
+                                groups=[self.visible_sprites, self.obstacle_sprites],
+                                sprite_type='object',
+                                surface=graphics['objects'][int(col)]
+                            )
+
+
+        self.player = Player(
+            (2000, 1430),
+            [self.visible_sprites],
+            self.obstacle_sprites
+        )
 
     def run(self) -> None:
         """Update and draw the game"""
@@ -60,7 +96,7 @@ class YSortCameraGroup(pygame.sprite.Group):
 
         # Creating the floor
         self.floor_surf = pygame.image.load('lib/images/tilemap/ground.png').convert()
-        self.floor_rect = self.floor_surf.get_rect()
+        self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
 
     def custom_draw(self, player):
         """docstring"""
@@ -72,6 +108,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
+        # Drawing all the other elements
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)
