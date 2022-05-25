@@ -5,6 +5,8 @@ from typing import List, Tuple
 
 import pygame
 
+from .config import config
+
 
 class Player(pygame.sprite.Sprite):
     """docstring goes here"""
@@ -17,13 +19,18 @@ class Player(pygame.sprite.Sprite):
         ) -> None:
         super().__init__(groups)
 
+        # Image init
         self.image = pygame.image.load('lib/images/dummy/player.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -26)
 
+        # Player initial attributes
         self.direction = pygame.math.Vector2()
-        self.speed = 5
+        self.speed = config.player_speed
+        self.attacking = False
+        self.attack_cooldown = config.player_attack_cooldown
 
+        # Obstacles of the player for which we have to handle collision
         self.obstacles_sprite = obstacles
 
     def _input(self):
