@@ -27,9 +27,12 @@ class Player(pygame.sprite.Sprite):
         self.obstacles_sprite = obstacles
 
     def _input(self):
-        """docstring goes here"""
+        """Identify the keys pressed by the user and modify the behaviour of the player avatar
+        accordingly
+        """
         keys = pygame.key.get_pressed()
 
+        # Movements input
         if keys[pygame.K_z]:
             self.direction.y = -1
         elif keys[pygame.K_s]:
@@ -43,6 +46,14 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
+
+        # Attack input
+        if keys[pygame.K_SPACE]:
+            print('attack')
+
+        # Magic input
+        if keys[pygame.K_LCTRL]:
+            print('magic')
 
     def _move(self, speed):
         """docstring"""
