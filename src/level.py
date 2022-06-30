@@ -26,6 +26,9 @@ class Level:
         # Config
         self.config = config
 
+        # Attack sprites
+        self.current_attack = None
+
         # Vars
         self._create_map()
 
@@ -76,12 +79,20 @@ class Level:
             (2000, 1430),
             [self.visible_sprites],
             self.obstacle_sprites,
-            self.create_attack
+            self.create_attack,
+            self.destroy_attack
         )
 
     def create_attack(self):
         """docstring here"""
-        Weapon(self.player, [self.visible_sprites])
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def destroy_attack(self):
+        """docstring"""
+        if self.current_attack:
+            self.current_attack.kill()
+
+
 
     def run(self) -> None:
         """Update and draw the game"""

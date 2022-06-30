@@ -17,7 +17,8 @@ class Player(pygame.sprite.Sprite):
             pos: Tuple[int, int],
             groups: List[pygame.sprite.Group],
             obstacles: pygame.sprite.Group,
-            create_attack: Callable
+            create_attack: Callable,
+            destroy_attack: Callable
         ) -> None:
         super().__init__(groups)
 
@@ -38,7 +39,15 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = config.player_attack_cooldown
         self.attack_time = None
+
+        # Weapon
         self.create_attack = create_attack
+        self.destroy_attack = destroy_attack
+        self.weapon_index = 0
+        self.weapon = list(config.weapon_data.keys())[self.weapon_index]
+        self.can_switch_weapon = True
+        self.weapon_switch_time = None
+        self.weapon_switch_cooldown = config.weapon_switch_cooldown
 
         # Obstacles of the player for which we have to handle collision
         self.obstacles_sprite = obstacles
@@ -94,6 +103,15 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
+
+            if keys[pygame.K_a] and self.can_switch_weapon:
+                self.can_switch_weapon = False
+                self.weapon_switch_time = pygame.time.get_ticks()
+                if self.weapon_index < len(config.weapon_data) - 1:
+                    self.weapon_index += 1
+                else:
+                    self.weapon_index = 0
+                self.weapon = list(config.weapon_data.keys())[self.weapon_index]
 
     def _get_status(self):
         """docstring"""
@@ -152,6 +170,11 @@ class Player(pygame.sprite.Sprite):
         if self.attacking:
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
+                self.destroy_attack()
+
+        if not self.can_switch_weapon:
+            if current_time - self.weapon_switch_time >= self.weapon_switch_cooldown:
+                self.can_switch_weapon = True
 
     def _animate(self):
         """docstring"""
@@ -164,8 +187,6 @@ class Player(pygame.sprite.Sprite):
 
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
-
-
 
 
     def update(self):

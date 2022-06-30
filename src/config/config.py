@@ -51,6 +51,6 @@ class Configuration:
             'graphic': 'lib/images/weapons/sai/full.png'
         }
     }
-
     weapon_horizon_offset = pygame.math.Vector2(0, 16)
     weapon_vertical_offset = pygame.math.Vector2(-10, 0)
+    weapon_switch_cooldown = 200
