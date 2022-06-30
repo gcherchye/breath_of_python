@@ -3,6 +3,8 @@ from __future__ import absolute_import
 
 from dataclasses import dataclass
 
+import pygame
+
 
 @dataclass
 class Configuration:
@@ -49,3 +51,6 @@ class Configuration:
             'graphic': 'lib/images/weapons/sai/full.png'
         }
     }
+
+    weapon_horizon_offset = pygame.math.Vector2(0, 16)
+    weapon_vertical_offset = pygame.math.Vector2(-10, 0)

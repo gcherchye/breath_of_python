@@ -9,7 +9,7 @@ from .config import config
 from .player import Player
 from .tile import Tile
 from .utils import import_csv_layout, import_image_from_folder
-
+from .weapon import Weapon
 
 
 class Level:
@@ -75,8 +75,13 @@ class Level:
         self.player = Player(
             (2000, 1430),
             [self.visible_sprites],
-            self.obstacle_sprites
+            self.obstacle_sprites,
+            self.create_attack
         )
+
+    def create_attack(self):
+        """docstring here"""
+        Weapon(self.player, [self.visible_sprites])
 
     def run(self) -> None:
         """Update and draw the game"""

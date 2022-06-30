@@ -1,7 +1,7 @@
 """docstring goes here"""
 from __future__ import absolute_import
 
-from typing import List, Tuple
+from typing import Callable, List, Tuple
 
 import pygame
 
@@ -16,7 +16,8 @@ class Player(pygame.sprite.Sprite):
             self,
             pos: Tuple[int, int],
             groups: List[pygame.sprite.Group],
-            obstacles: pygame.sprite.Group
+            obstacles: pygame.sprite.Group,
+            create_attack: Callable
         ) -> None:
         super().__init__(groups)
 
@@ -37,6 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = config.player_attack_cooldown
         self.attack_time = None
+        self.create_attack = create_attack
 
         # Obstacles of the player for which we have to handle collision
         self.obstacles_sprite = obstacles
@@ -91,6 +93,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE] or keys[pygame.K_LCTRL]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+                self.create_attack()
 
     def _get_status(self):
         """docstring"""
