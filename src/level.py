@@ -38,7 +38,7 @@ class Level:
         self._create_map()
 
         # User Interface
-        self.ui = UI()
+        self.user_interface = UI()
 
     def _create_map(self) -> None:
         """Creates the game map based on imported layouts and graphics
@@ -121,7 +121,7 @@ class Level:
         """
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        self.ui.display(self.player)
+        self.user_interface.display(self.player)
 
 
 class YSortCameraGroup(pygame.sprite.Group):
