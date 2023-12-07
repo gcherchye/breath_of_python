@@ -14,6 +14,15 @@ class Configuration:
     height = 720
     tilesize = 64
 
+    # colors
+    water_color = '#71ddee'
+    ui_bg_color = '#222222'
+    ui_border_color = '#111111'
+    text_color = '#EEEEEE'
+    health_color = 'red'
+    energy_color = 'blue'
+    ui_border_color_active = 'gold'
+
     # Time config
     fps = 60
 
@@ -21,6 +30,13 @@ class Configuration:
     player_img_path = 'lib/images/player/'
     player_animation_speed = 0.15
     player_attack_cooldown = 400
+    player_stats = {
+        'health': 100,
+        'energy': 60,
+        'attack': 10,
+        'magic': 4,
+        'speed': 5
+    }
 
     # Weapons config
     weapon_data = {
@@ -54,11 +70,10 @@ class Configuration:
     weapon_vertical_offset = pygame.math.Vector2(-10, 0)
     weapon_switch_cooldown = 200
 
-    # Stats config
-    player_stats = {
-        'health': 100,
-        'energy': 60,
-        'attack': 10,
-        'magic': 4,
-        'speed': 5
-    }
+    # User Interface
+    bar_height = 20
+    health_bar_width = 200
+    energy_bar_width = 140
+    item_box_size = 80
+    ui_font = 'lib/images/font/joystix.ttf'
+    ui_font_size = 18
