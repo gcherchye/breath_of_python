@@ -8,6 +8,7 @@ import pygame
 from .config import config
 from .player import Player
 from .tile import Tile
+from .ui import UI
 from .utils import import_csv_layout, import_image_from_folder
 from .weapon import Weapon
 
@@ -35,6 +36,9 @@ class Level:
 
         # Vars
         self._create_map()
+
+        # User Interface
+        self.ui = UI()
 
     def _create_map(self) -> None:
         """Creates the game map based on imported layouts and graphics
@@ -117,6 +121,7 @@ class Level:
         """
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.ui.display(self.player)
 
 
 class YSortCameraGroup(pygame.sprite.Group):
