@@ -20,7 +20,6 @@ class Configuration:
     # Player config
     player_img_path = 'lib/images/player/'
     player_animation_speed = 0.15
-    player_speed = 5
     player_attack_cooldown = 400
 
     # Weapons config
@@ -54,3 +53,12 @@ class Configuration:
     weapon_horizon_offset = pygame.math.Vector2(0, 16)
     weapon_vertical_offset = pygame.math.Vector2(-10, 0)
     weapon_switch_cooldown = 200
+
+    # Stats config
+    player_stats = {
+        'health': 100,
+        'energy': 60,
+        'attack': 10,
+        'magic': 4,
+        'speed': 5
+    }

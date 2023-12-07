@@ -44,7 +44,6 @@ class Player(pygame.sprite.Sprite):
 
         # Player initial attributes
         self.direction = pygame.math.Vector2()
-        self.speed = config.player_speed
         self.attacking = False
         self.attack_cooldown = config.player_attack_cooldown
         self.attack_time = None
@@ -57,6 +56,13 @@ class Player(pygame.sprite.Sprite):
         self.can_switch_weapon = True
         self.weapon_switch_time = None
         self.weapon_switch_cooldown = config.weapon_switch_cooldown
+
+        # Stats
+        self.stats = config.player_stats
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.exp = 123
+        self.speed = self.stats['speed']
 
         # Obstacles of the player for which we have to handle collision
         self.obstacles_sprite = obstacles
