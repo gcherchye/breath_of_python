@@ -9,7 +9,7 @@ from .config import config
 
 
 class Tile(pygame.sprite.Sprite):
-    """docstring goes here"""
+    """A class representing tiles in the game."""
 
     def __init__(
             self,
@@ -18,6 +18,14 @@ class Tile(pygame.sprite.Sprite):
             sprite_type,
             surface: pygame.Surface=pygame.Surface((config.tilesize, config.tilesize))
         ) -> None:
+        """Initializes the Tile class
+
+        Args:
+            pos (Tuple[int, int]): The position of the tile.
+            groups (List[pygame.sprite.Group]): List of sprite groups to add the tile to.
+            sprite_type: Type of sprite.
+            surface (pygame.Surface): Surface to represent the tile (default is a blank surface).
+        """
         super().__init__(groups)
 
         self.image = surface
