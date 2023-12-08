@@ -41,10 +41,18 @@ class UI:
         # Convert weapon dict
         self.weapon_graphics = []
         for weapon in config.weapon_data.values():
-            img_path = weapon['graphic']
-            weapon_img = pygame.image.load(img_path).convert_alpha()
+            weapon_img_path = weapon['graphic']
+            weapon_img = pygame.image.load(weapon_img_path).convert_alpha()
 
             self.weapon_graphics.append(weapon_img)
+
+        # Convert magic dict
+        self.magic_graphics = []
+        for magic in config.magic_data.values():
+            magic_img_path = magic['graphic']
+            magic_img = pygame.image.load(magic_img_path).convert_alpha()
+
+            self.magic_graphics.append(magic_img)
 
     def show_bar(
             self,
@@ -116,11 +124,32 @@ class UI:
             weapon_index (int): Index of the weapon image to display.
             has_switched (bool): Indicates if the weapon has switched.
         """
-        bg_rect = self.selection_box(10, 630, has_switched)
+        bg_rect = self.selection_box(
+            config.weapon_box_top_left[0],
+            config.weapon_box_top_left[1],
+            has_switched
+        )
         weapon_surf = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
 
         self.display_surface.blit(self.weapon_graphics[weapon_index], weapon_rect)
+
+    def magic_overlay(self, magic_index: int, has_switched: bool) -> None:
+        """Displays the weapon overlay on the UI
+
+        Args:
+            weapon_index (int): Index of the weapon image to display.
+            has_switched (bool): Indicates if the weapon has switched.
+        """
+        bg_rect = self.selection_box(
+            config.magic_box_top_left[0],
+            config.magic_box_top_left[1],
+            has_switched
+        )
+        magic_surf = self.magic_graphics[magic_index]
+        magic_rect = magic_surf.get_rect(center=bg_rect.center)
+
+        self.display_surface.blit(self.magic_graphics[magic_index], magic_rect)
 
     def display(self, player: Player) -> None:
         """Displays the UI elements based on player data
@@ -144,4 +173,4 @@ class UI:
         self.show_exp(player.exp)
 
         self.weapon_overlay(player.weapon_index, not player.can_switch_weapon)
-        #self.selection_box(80, 635) # magic
+        self.magic_overlay(player.magic_index, not player.can_switch_magic)
