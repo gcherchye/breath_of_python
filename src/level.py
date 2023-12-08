@@ -92,11 +92,12 @@ class Level:
 
 
         self.player = Player(
-            (2000, 1430),
-            [self.visible_sprites],
-            self.obstacle_sprites,
-            self.create_attack,
-            self.destroy_attack
+            pos=(2000, 1430),
+            groups=[self.visible_sprites],
+            obstacles=self.obstacle_sprites,
+            create_attack=self.create_attack,
+            destroy_attack=self.destroy_attack,
+            create_magic=self.create_magic
         )
 
     def create_attack(self) -> None:
@@ -105,6 +106,18 @@ class Level:
         Initiates the creation of an attack object for the player.
         """
         self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def create_magic(self, style: str, strenght: int, cost: int) -> None:
+        """Create a magic attack for the player
+
+        Args:
+            style (str): The style of magic used
+            strenght (int): The strenght of the spell
+            cost (int): The energy cost of the spell
+        """
+        print(style)
+        print(strenght)
+        print(cost)
 
     def destroy_attack(self) -> None:
         """Destroys the current attack object
