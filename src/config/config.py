@@ -37,6 +37,7 @@ class Configuration:
         'magic': 4,
         'speed': 5
     }
+    switch_duration_cooldown = 200
 
     # Weapons config
     weapon_data = {
@@ -68,7 +69,12 @@ class Configuration:
     }
     weapon_horizon_offset = pygame.math.Vector2(0, 16)
     weapon_vertical_offset = pygame.math.Vector2(-10, 0)
-    weapon_switch_cooldown = 200
+
+    # Magic config
+    magic_data = {
+        'flame': {'strenght': 5, 'cost': 20, 'graphic': 'lib/images/particles/flame/fire.png'},
+        'heal': {'strenght': 20, 'cost': 10, 'graphic': 'lib/images/particles/heal/heal.png'}
+    }
 
     # User Interface
     bar_height = 20
@@ -77,3 +83,5 @@ class Configuration:
     item_box_size = 80
     ui_font = 'lib/images/font/joystix.ttf'
     ui_font_size = 18
+    weapon_box_top_left = (10, 630)
+    magic_box_top_left = (80, 635)
