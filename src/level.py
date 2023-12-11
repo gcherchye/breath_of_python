@@ -103,7 +103,7 @@ class Level:
                                     create_magic=self.create_magic
                                 )
                             else:
-                                Enemy('monster', (x_pos, y_pos), [self.visible_sprites])
+                                Enemy('squid', (x_pos, y_pos), [self.visible_sprites])
 
 
 
