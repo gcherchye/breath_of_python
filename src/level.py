@@ -103,7 +103,15 @@ class Level:
                                     create_magic=self.create_magic
                                 )
                             else:
-                                Enemy('squid', (x_pos, y_pos), [self.visible_sprites])
+                                if col == '390':
+                                    monster_name = 'bamboo'
+                                elif col == '391':
+                                    monster_name = 'spirit'
+                                elif col == '392':
+                                    monster_name = 'raccoon'
+                                else:
+                                    monster_name = 'squid'
+                                Enemy(monster_name, (x_pos, y_pos), [self.visible_sprites])
 
 
 
