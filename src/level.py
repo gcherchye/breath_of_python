@@ -6,6 +6,7 @@ import random
 import pygame
 
 from .config import config
+from .enemy import Enemy
 from .player import Player
 from .tile import Tile
 from .ui import UI
@@ -52,7 +53,8 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('lib/data/map_FloorBlocks.csv'),
             'grass': import_csv_layout('lib/data/map_Grass.csv'),
-            'object': import_csv_layout('lib/data/map_Objects.csv')
+            'object': import_csv_layout('lib/data/map_Objects.csv'),
+            'entities': import_csv_layout('lib/data/map_Entities.csv')
         }
 
         graphics = {
@@ -90,15 +92,20 @@ class Level:
                                 surface=graphics['objects'][int(col)]
                             )
 
+                        if style == 'entities':
+                            if col == config.player_tile_id:
+                                self.player = Player(
+                                    pos=(x_pos, y_pos),
+                                    groups=[self.visible_sprites],
+                                    obstacles=self.obstacle_sprites,
+                                    create_attack=self.create_attack,
+                                    destroy_attack=self.destroy_attack,
+                                    create_magic=self.create_magic
+                                )
+                            else:
+                                Enemy('monster', (x_pos, y_pos), [self.visible_sprites])
 
-        self.player = Player(
-            pos=(2000, 1430),
-            groups=[self.visible_sprites],
-            obstacles=self.obstacle_sprites,
-            create_attack=self.create_attack,
-            destroy_attack=self.destroy_attack,
-            create_magic=self.create_magic
-        )
+
 
     def create_attack(self) -> None:
         """Creates an attack for the player
