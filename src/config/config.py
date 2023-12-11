@@ -41,6 +41,7 @@ class Configuration:
         'speed': 5
     }
     switch_duration_cooldown = 200
+    player_tile_id = '394'
 
     # Weapons config
     weapon_data = {
