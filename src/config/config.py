@@ -26,9 +26,12 @@ class Configuration:
     # Time config
     fps = 60
 
+    # Entity config
+    animation_speed = 0.15
+    frame_index = 0
+
     # Player config
     player_img_path = 'lib/images/player/'
-    player_animation_speed = 0.15
     player_attack_cooldown = 400
     player_stats = {
         'health': 100,
@@ -54,6 +57,54 @@ class Configuration:
     magic_data = {
         'flame': {'strenght': 5, 'cost': 20, 'graphic': 'lib/images/particles/flame/fire.png'},
         'heal': {'strenght': 20, 'cost': 10, 'graphic': 'lib/images/particles/heal/heal.png'}
+    }
+
+    # Enemy config
+    monster_data = {
+        'squid': {
+            'health': 100,
+            'exp': 100,
+            'damage': 20,
+            'attack_type': 'slash',
+            'attack_sound': 'lib/audio/attack/slash.wav',
+            'speed': 3,
+            'resistance': 3,
+            'attack_radius': 80,
+            'notice_radius': 360
+        },
+        'raccoon': {
+            'health': 300,
+            'exp': 250,
+            'damage': 40,
+            'attack_type': 'claw',
+            'attack_sound': 'lib/audio/attack/claw.wav',
+            'speed': 2,
+            'resistance': 3,
+            'attack_radius': 120,
+            'notice_radius': 400
+        },
+        'spirit': {
+            'health': 100,
+            'exp': 110,
+            'damage': 8,
+            'attack_type': 'thunder',
+            'attack_sound': 'lib/audio/attack/fireball.wav',
+            'speed': 4,
+            'resistance': 3,
+            'attack_radius': 60,
+            'notice_radius': 350
+        },
+        'bamboo': {
+            'health': 70,
+            'exp': 120,
+            'damage': 6,
+            'attack_type': 'leaf_attack',
+            'attack_sound': 'lib/audio/attack/slash.wav',
+            'speed': 2,
+            'resistance': 3,
+            'attack_radius': 50,
+            'notice_radius': 300
+        }
     }
 
     # User Interface
