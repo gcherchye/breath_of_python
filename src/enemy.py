@@ -7,11 +7,12 @@ import pygame
 
 from .config import config
 from .entity import Entity
+from .player import Player
 from .utils.utils import import_image_from_folder
 
 
 class Enemy(Entity):
-    """docstring"""
+    """Class representing an enemy entity"""
 
     def __init__(
             self,
@@ -20,6 +21,15 @@ class Enemy(Entity):
             groups: List[pygame.sprite.Group],
             obstacles: pygame.sprite.Group
         ) -> None:
+        """Intitialise an Enemy object
+
+        Args:
+            monster_name (str): The name of the monster, refering to the config
+            pos (Tuple[int, int]): The initial position (x, y) of the enemy
+            groups (List[pygame.sprite.Group]): List of the sprite groups the enemy belongs to
+            obstacles (pygame.sprite.Group): Sprite groupe containing obstacles the enemy can
+                collide to
+        """
         super().__init__(groups)
 
         # General setup
@@ -47,7 +57,12 @@ class Enemy(Entity):
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
 
-    def _import_graphics(self, name: str):
+    def _import_graphics(self, name: str) -> None:
+        """Import graphics for the different enemy animations
+
+        Args:
+            name (str): The name of the enemy
+        """
         self.animations = {
             'idle': [],
             'move': [],
@@ -58,7 +73,12 @@ class Enemy(Entity):
         for animation in self.animations:
             self.animations[animation] = import_image_from_folder(main_path + animation)
 
-    def _get_status(self, player):
+    def _get_status(self, player: Player) -> None:
+        """Determine the status of the enemy based on player distance
+
+        Args:
+            player (Player): The player object
+        """
         distance, _ = self._get_player_distance_direction(player)
 
         if distance <= self.attack_radius:
@@ -68,7 +88,15 @@ class Enemy(Entity):
         else:
             self.status = 'idle'
 
-    def _get_player_distance_direction(self, player) -> Tuple[float, pygame.math.Vector2]:
+    def _get_player_distance_direction(self, player: Player) -> Tuple[float, pygame.math.Vector2]:
+        """Calculate the distance and direction to the player
+
+        Args:
+            player (Player): The player object
+
+        Returns:
+            Tuple[float, pygame.math.Vector2]: Distance to the player and the direction as a vector
+        """
         enemy_vec = pygame.math.Vector2(self.rect.center)
         player_vec = pygame.math.Vector2(player.rect.center)
 
@@ -81,20 +109,26 @@ class Enemy(Entity):
 
         return distance, direction
 
-    def action(self, player):
+    def _action(self, player: Player) -> None:
+        """Perform an action based on the enemy current status
+
+        Args:
+            player (Player): The player object
+        """
         if self.status == 'attack':
             print('attack')
         elif self.status == 'move':
             _, self.direction = self._get_player_distance_direction(player)
         else:
             self.direction = pygame.math.Vector2()
-    
+
     def animate(self):
-        
+        pass
+
 
     def update(self) -> None:
         self._move(self.speed)
 
-    def enemy_update(self, player):
+    def enemy_update(self, player: Player) -> None:
         self._get_status(player)
-        self.action(player)
+        self._action(player)
