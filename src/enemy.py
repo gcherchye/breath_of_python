@@ -57,6 +57,8 @@ class Enemy(Entity):
         self.notice_radius = monster_info['notice_radius']
         self.attack_type = monster_info['attack_type']
 
+        # Player interaction
+
     def _import_graphics(self, name: str) -> None:
         """Import graphics for the different enemy animations
 
@@ -122,12 +124,20 @@ class Enemy(Entity):
         else:
             self.direction = pygame.math.Vector2()
 
-    def animate(self):
-        pass
+    def _animate(self):
+        animation = self.animations[self.status]
 
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center=self.hitbox.center)
 
     def update(self) -> None:
         self._move(self.speed)
+        self._animate()
+
 
     def enemy_update(self, player: Player) -> None:
         self._get_status(player)
