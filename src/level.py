@@ -34,6 +34,8 @@ class Level:
 
         # Attack sprites
         self.current_attack = None
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
         # Vars
         self._create_map()
@@ -79,7 +81,11 @@ class Level:
                         if style == 'grass':
                             Tile(
                                 pos=(x_pos, y_pos),
-                                groups=[self.visible_sprites, self.obstacle_sprites],
+                                groups=[
+                                    self.visible_sprites,
+                                    self.obstacle_sprites,
+                                    self.attackable_sprites
+                                ],
                                 sprite_type='grass',
                                 surface=random.choice(graphics['grass'])
                             )
@@ -114,7 +120,7 @@ class Level:
                                 Enemy(
                                     monster_name=monster_name,
                                     pos=(x_pos, y_pos),
-                                    groups=[self.visible_sprites],
+                                    groups=[self.visible_sprites, self.attackable_sprites],
                                     obstacles=self.obstacle_sprites
                                 )
 
@@ -125,7 +131,7 @@ class Level:
 
         Initiates the creation of an attack object for the player.
         """
-        self.current_attack = Weapon(self.player, [self.visible_sprites])
+        self.current_attack = Weapon(self.player, [self.visible_sprites, self.attack_sprites])
 
     def create_magic(self, style: str, strenght: int, cost: int) -> None:
         """Create a magic attack for the player
@@ -147,6 +153,18 @@ class Level:
         if self.current_attack:
             self.current_attack.kill()
 
+    def player_attack_logic(self):
+        if self.attack_sprites:
+            for attack_sprite in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(
+                    sprite=attack_sprite,
+                    group=self.attackable_sprites,
+                    dokill=True
+                )
+            if collision_sprites:
+                for target_sprite in collision_sprites:
+                    target_sprite.kill()
+
     def run(self) -> None:
         """Runs the game loop, updating and drawing game elements
 
@@ -155,6 +173,7 @@ class Level:
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
+        self.player_attack_logic()
         self.user_interface.display(self.player)
 
 
