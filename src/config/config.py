@@ -71,7 +71,8 @@ class Configuration:
             'speed': 3,
             'resistance': 3,
             'attack_radius': 80,
-            'notice_radius': 360
+            'notice_radius': 360,
+            'cooldown': 400,
         },
         'raccoon': {
             'health': 300,
@@ -82,7 +83,8 @@ class Configuration:
             'speed': 2,
             'resistance': 3,
             'attack_radius': 120,
-            'notice_radius': 400
+            'notice_radius': 400,
+            'cooldown': 400,
         },
         'spirit': {
             'health': 100,
@@ -93,7 +95,8 @@ class Configuration:
             'speed': 4,
             'resistance': 3,
             'attack_radius': 60,
-            'notice_radius': 350
+            'notice_radius': 350,
+            'cooldown': 400,
         },
         'bamboo': {
             'health': 70,
@@ -104,7 +107,8 @@ class Configuration:
             'speed': 2,
             'resistance': 3,
             'attack_radius': 50,
-            'notice_radius': 300
+            'notice_radius': 300,
+            'cooldown': 400,
         }
     }
 
