@@ -159,11 +159,14 @@ class Level:
                 collision_sprites = pygame.sprite.spritecollide(
                     sprite=attack_sprite,
                     group=self.attackable_sprites,
-                    dokill=True
+                    dokill=False
                 )
             if collision_sprites:
                 for target_sprite in collision_sprites:
-                    target_sprite.kill()
+                    if target_sprite.sprite_type == 'grass':
+                        target_sprite.kill()
+                    else:
+                        target_sprite.get_damage(self.player, attack_sprite.sprite_type)
 
     def run(self) -> None:
         """Runs the game loop, updating and drawing game elements
