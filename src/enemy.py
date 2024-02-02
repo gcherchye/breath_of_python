@@ -175,8 +175,9 @@ class Enemy(Entity):
         if self.health <= 0:
             self.kill()
 
-    def hit_reaction(self):
-        pass
+    def _hit_reaction(self):
+        if not self.vulnerable:
+            self.direction *= -self.resistance
 
     def get_damage(self, player: Player, attack_type: str) -> None:
         """Applies damage to the enemy based on the type of attack
@@ -191,6 +192,7 @@ class Enemy(Entity):
                 magical attacks
         """
         if self.vulnerable:
+            self.direction = self._get_player_distance_direction(player)[1]
             if attack_type == 'weapon':
                 self.health -= player.get_full_weapon_damage()
             else:
@@ -200,6 +202,7 @@ class Enemy(Entity):
 
     def update(self) -> None:
         """Updates the sprite's movement, animation, cooldowns, and checks for death"""
+        self._hit_reaction()
         self._move(self.speed)
         self._animate()
         self._cooldowns()
