@@ -73,6 +73,7 @@ class Configuration:
             'attack_radius': 80,
             'notice_radius': 360,
             'cooldown': 400,
+            'invincibility_duration': 300
         },
         'raccoon': {
             'health': 300,
@@ -85,6 +86,7 @@ class Configuration:
             'attack_radius': 120,
             'notice_radius': 400,
             'cooldown': 400,
+            'invincibility_duration': 300
         },
         'spirit': {
             'health': 100,
@@ -97,6 +99,7 @@ class Configuration:
             'attack_radius': 60,
             'notice_radius': 350,
             'cooldown': 400,
+            'invincibility_duration': 300
         },
         'bamboo': {
             'health': 70,
@@ -109,6 +112,7 @@ class Configuration:
             'attack_radius': 50,
             'notice_radius': 300,
             'cooldown': 400,
+            'invincibility_duration': 300
         }
     }
 

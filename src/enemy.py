@@ -62,6 +62,11 @@ class Enemy(Entity):
         self.attack_time = None
         self.attack_cooldown = monster_info['cooldown']
 
+        # Invincibility timer
+        self.vulnerable = True
+        self.hit_time = None
+        self.invincibility_duration = monster_info['invincibility_duration']
+
     def _import_graphics(self, name: str) -> None:
         """Import graphics for the different enemy animations
 
@@ -130,7 +135,14 @@ class Enemy(Entity):
         else:
             self.direction = pygame.math.Vector2()
 
-    def _animate(self):
+    def _animate(self) -> None:
+        """Animates the enemy based on its current status
+
+        This method updates the enemy's image to the next frame in the corresponding animation
+        sequence, considering the animation speed and status. It handles frame looping and
+        manages the attack status.
+        """
+
         animation = self.animations[self.status]
 
         self.frame_index += self.animation_speed
@@ -142,19 +154,62 @@ class Enemy(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-    def _attack_cooldown(self):
-        if not self.can_attack:
-            current_time = pygame.time.get_ticks()
+    def _cooldowns(self) -> None:
+        """Manages cooldowns for the enemy
 
+        This method checks and updates the cooldown status for attacks and invincibility. It
+        ensures that the enemy can attack again after a specified cooldown period and becomes
+        vulnerable again after a certain invincibility duration.
+        """
+        current_time = pygame.time.get_ticks()
+        if not self.can_attack:
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.can_attack = True
 
+        if not self.vulnerable:
+            if current_time - self.hit_time >= self.invincibility_duration:
+                self.vulnerable = True
+
+    def _check_death(self) -> None:
+        """Check if the enemy is dead according to his current health"""
+        if self.health <= 0:
+            self.kill()
+
+    def hit_reaction(self):
+        pass
+
+    def get_damage(self, player: Player, attack_type: str) -> None:
+        """Applies damage to the enemy based on the type of attack
+
+        This method reduces the enemy's health when it receives damage from a player's attack,
+        considering the attack type and the enemy's vulnerability status. It updates the hit
+        time and sets the enemy to be invulnerable for a specified duration.
+
+        Args:
+            player(Player): The player object
+            attack_type (str): The type of attack, 'weapon' for physical attacks, or 'magic' for
+                magical attacks
+        """
+        if self.vulnerable:
+            if attack_type == 'weapon':
+                self.health -= player.get_full_weapon_damage()
+            else:
+                pass  # Magic damage
+            self.hit_time = pygame.time.get_ticks()
+            self.vulnerable = False
+
     def update(self) -> None:
+        """Updates the sprite's movement, animation, cooldowns, and checks for death"""
         self._move(self.speed)
         self._animate()
-
+        self._cooldowns()
+        self._check_death()
 
     def enemy_update(self, player: Player) -> None:
+        """Updates the enemy sprite's status, actions, and interactions with the player
+
+        Args:
+            player (Player): The player object
+        """
         self._get_status(player)
         self._action(player)
-        self._attack_cooldown()
