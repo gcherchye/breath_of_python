@@ -1,7 +1,7 @@
 """docstring"""
 from __future__ import absolute_import
 
-from typing import List, Tuple
+from typing import Callable ,List, Tuple
 
 import pygame
 
@@ -19,7 +19,8 @@ class Enemy(Entity):
             monster_name: str,
             pos: Tuple[int, int],
             groups: List[pygame.sprite.Group],
-            obstacles: pygame.sprite.Group
+            obstacles: pygame.sprite.Group,
+            damage: Callable
         ) -> None:
         """Intitialise an Enemy object
 
@@ -61,6 +62,7 @@ class Enemy(Entity):
         self.can_attack = True
         self.attack_time = None
         self.attack_cooldown = monster_info['cooldown']
+        self.damage_player = damage
 
         # Invincibility timer
         self.vulnerable = True
@@ -129,7 +131,7 @@ class Enemy(Entity):
         """
         if self.status == 'attack':
             self.attack_time = pygame.time.get_ticks()
-            print('attack')
+            self.damage_player(self.attack_damage, self.attack_type)
         elif self.status == 'move':
             _, self.direction = self._get_player_distance_direction(player)
         else:
@@ -153,6 +155,13 @@ class Enemy(Entity):
 
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
+
+        # Flicker if hit
+        if not self.vulnerable:
+            alpha = self._wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
 
     def _cooldowns(self) -> None:
         """Manages cooldowns for the enemy
