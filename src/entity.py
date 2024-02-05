@@ -3,6 +3,8 @@ from __future__ import absolute_import
 
 from typing import List
 
+from math import sin
+
 import pygame
 
 from src.config import config
@@ -64,3 +66,9 @@ class Entity(pygame.sprite.Sprite):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y <= 0:
                         self.hitbox.top = sprite.hitbox.bottom
+
+    def _wave_value(self) -> int:
+        value = sin(pygame.time.get_ticks())
+        if value >= 0:
+            return 255
+        return 0
