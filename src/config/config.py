@@ -38,7 +38,8 @@ class Configuration:
         'energy': 60,
         'attack': 10,
         'magic': 4,
-        'speed': 5
+        'speed': 5,
+        'invincibility_duration': 500
     }
     switch_duration_cooldown = 200
     player_tile_id = '394'
