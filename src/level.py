@@ -175,7 +175,6 @@ class Level:
 
             # Spawn particule
 
-
     def run(self) -> None:
         """Runs the game loop, updating and drawing game elements
 

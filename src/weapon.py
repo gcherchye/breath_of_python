@@ -21,7 +21,8 @@ class Weapon(pygame.sprite.Sprite):
     def __init__(self, player, *groups) -> None:
         """Initialize the Weapon object.
 
-        Loads the image for the weapon and sets its initial placement based on the player's direction.
+        Loads the image for the weapon and sets its initial placement based on the player's
+        direction
 
         Args:
             player (Player): The player object associated with the weapon.
