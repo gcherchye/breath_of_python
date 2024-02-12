@@ -1,6 +1,7 @@
 """slip de bain"""
 from __future__ import absolute_import
 
+from random import choice
 from typing import List
 
 import pygame
@@ -55,6 +56,11 @@ class AnimationPlayer:
 
         return new_frames
 
+    def create_grass_particles(self, position, groups):
+        animation_frames = choice(self.frames['leaf'])
+        ParticleEffect(position, animation_frames, groups)
+
+
 class ParticleEffect(pygame.sprite.Sprite):
     def __init__(self, position, animation_frames, groups) -> None:
         super().__init__(groups)
@@ -63,14 +69,15 @@ class ParticleEffect(pygame.sprite.Sprite):
         self.frame_index = config.frame_index
         self.frames = animation_frames
 
-        self.image = self.image.get_rect[self.frame_index]
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(center=position)
 
-        def _animate(self):
-            self.frame_index += self.animation_speed
-            if self.frame >= len(self.frames):
-                self.kill()
-            else:
-                self.image = self.frames[int(self.frame_index)]
+    def _animate(self):
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(self.frames):
+            self.kill()
+        else:
+            self.image = self.frames[int(self.frame_index)]
 
-        def update(self):
-            self._animate()
+    def update(self):
+        self._animate()
