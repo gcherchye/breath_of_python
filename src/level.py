@@ -7,6 +7,7 @@ import pygame
 
 from .config import config
 from .enemy import Enemy
+from .particles import AnimationPlayer
 from .player import Player
 from .tile import Tile
 from .ui import UI
@@ -42,6 +43,9 @@ class Level:
 
         # User Interface
         self.user_interface = UI()
+
+        # Particles
+        self.animation_player = AnimationPlayer()
 
     def _create_map(self) -> None:
         """Creates the game map based on imported layouts and graphics
@@ -163,6 +167,11 @@ class Level:
             if collision_sprites:
                 for target_sprite in collision_sprites:
                     if target_sprite.sprite_type == 'grass':
+                        position = target_sprite.rect.center
+                        self.animation_player.create_grass_particles(
+                            position,
+                            [self.visible_sprites]
+                        )
                         target_sprite.kill()
                     else:
                         target_sprite.get_damage(self.player, attack_sprite.sprite_type)
